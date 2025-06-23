@@ -3,7 +3,7 @@ name: Deploy to Azure Static Web App
 on:
   push:
     branches:
-      - main  # O cambia a la rama que uses para desplegar
+      - main
 
 permissions:
   id-token: write
@@ -12,7 +12,7 @@ permissions:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    environment: production  # Este debe coincidir con el de Azure
+    environment: production
 
     steps:
       - name: Checkout code
@@ -26,11 +26,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy to Azure Static Web App
-        uses: Azure/static-web-apps-deploy@latest
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"               # Raíz del proyecto web
-          api_location: ""                # No tienes backend API
-          output_location: "/"            # Output del build si aplica
+          app_location: "/"         # La raíz de tu app (index.html está en raíz)
+          output_location: ""       # Vacío porque no hay build step
